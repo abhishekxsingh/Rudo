@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rudo/screens/onboarding_page_3.dart';
 
 class OnboardingPage2 extends StatelessWidget {
   const OnboardingPage2({super.key});

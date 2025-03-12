@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
               case AppRoute.onboarding1:
                 return const OnboardingPage1();
               case AppRoute.onboarding2:
-              // return const OnboardingPage2();
+                return const OnboardingPage2();
               case AppRoute.onboarding3:
                 return const OnboardingPage3();
               case AppRoute.login:
