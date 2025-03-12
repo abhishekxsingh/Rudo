@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rudo/blocs/navigation/navigation_bloc.dart';
+import 'package:rudo/blocs/navigation/navigation_event.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+class OnboardingPage1 extends StatefulWidget {
+  const OnboardingPage1({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<OnboardingPage1> createState() => _OnboardingPage1State();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingPage1State extends State<OnboardingPage1> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final int _totalPages = 3;
@@ -25,8 +28,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // Navigate to the next screen after onboarding
-      Navigator.pushReplacementNamed(context, '/home');
+      // Use NavigationBloc to navigate to onboarding2
+      context.read<NavigationBloc>().add(NavigateToOnboarding2());
     }
   }
 
@@ -76,7 +79,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return _buildFirstPage(); // Using the exact design from the image
+                  // Return different page based on index
+                  switch (index) {
+                    case 0:
+                      return _buildFirstPage();
+                    case 1:
+                      return _buildSecondPage();
+                    case 2:
+                      return _buildThirdPage();
+                    case 3:
+                    default:
+                      return _buildFirstPage();
+                  }
                 },
               ),
             ),
@@ -256,6 +270,272 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSecondPage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(flex: 1),
+
+          // Home icon and goal
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey[900],
+                  ),
+                  child: Icon(
+                    Icons.home,
+                    color: Colors.amber[200],
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  'Buy dream home',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '₹',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Text(
+                      '10.4 Lakh',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Icon(
+                  Icons.arrow_upward,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          // Contributors section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildContributor('You', '₹5.2 Lakh'),
+              const SizedBox(width: 20),
+              _buildContributor('Your wife', '₹5.2 Lakh'),
+            ],
+          ),
+
+          const Spacer(flex: 2),
+
+          // Bottom text
+          const Text(
+            'Grow your wealth together.',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 40,
+              fontFamily: 'Be Vietnam Pro',
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            'Invest with your family member and build wealth, together.',
+            style: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 18,
+            ),
+          ),
+
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThirdPage() {
+    return Container(
+      color: Colors.black,
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 20),
+                  // Graph area using image asset
+                  Expanded(
+                    flex: 4,
+                    child: Stack(
+                      children: [
+                        // Graph image from assets
+                        Positioned.fill(
+                          child: Image.asset(
+                            'assets/image/graph.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Bottom text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "View your portfolio at a glance.",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontFamily: 'Be Vietnam Pro',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        "Get valuable insights into how diversified your investments are.",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 16,
+                          fontFamily: 'Be Vietnam Pro',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Asset card widget
+  Widget _buildAssetCard(
+      String symbol, String name, String changePercent, double price) {
+    final isPositive = changePercent.startsWith("+");
+
+    return Container(
+      width: 160,
+      margin: EdgeInsets.only(right: 12),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                symbol,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: isPositive
+                      ? Colors.green.withOpacity(0.2)
+                      : Colors.red.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  changePercent,
+                  style: TextStyle(
+                    color: isPositive ? Colors.green : Colors.red,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            name,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              fontSize: 12,
+            ),
+          ),
+          Text(
+            "\$${price.toStringAsFixed(2)}",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Be Vietnam Pro',
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContributor(String title, String amount) {
+    return Container(
+      width: 160,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            amount,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],

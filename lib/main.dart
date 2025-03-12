@@ -5,8 +5,10 @@ import 'package:rudo/blocs/app/app_event.dart';
 import 'package:rudo/blocs/navigation/navigation_bloc.dart';
 import 'package:rudo/blocs/navigation/navigation_state.dart';
 import 'package:rudo/blocs/onboarding/onboarding_bloc.dart';
+import 'package:rudo/screens/loginpage.dart';
 import 'package:rudo/screens/onboarding_page_1.dart';
 import 'package:rudo/screens/onboarding_page_2.dart';
+import 'package:rudo/screens/onboarding_page_3.dart';
 import 'package:rudo/screens/splashscreen_page_1.dart';
 import 'package:rudo/screens/splashscreen_page_2.dart';
 
@@ -45,12 +47,16 @@ class MyApp extends StatelessWidget {
                 return const SplashScreenPage1();
               case AppRoute.splash2:
                 return const SplashScreenPage2();
-              case AppRoute.onboarding:
-                return const OnboardingScreen();
               case AppRoute.onboarding1:
-                return const SavingsScreen();
-              case AppRoute.home:
-                return const Scaffold();
+                return const OnboardingPage1();
+              case AppRoute.onboarding2:
+              // return const OnboardingPage2();
+              case AppRoute.onboarding3:
+                return const OnboardingPage3();
+              case AppRoute.login:
+                return const LoginScreen();
+              default:
+                return const OnboardingPage3();
             }
           },
         ),
@@ -58,5 +64,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class AppStarted {}

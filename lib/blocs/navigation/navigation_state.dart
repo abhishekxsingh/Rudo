@@ -1,6 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-enum AppRoute { splash1, splash2, onboarding, home, onboarding1 }
+enum AppRoute {
+  splash1,
+  splash2,
+  onboarding1,
+  onboarding2,
+  onboarding3,
+  savingscreen,
+  home,
+  login,
+}
 
 class NavigationState extends Equatable {
   final AppRoute currentRoute;

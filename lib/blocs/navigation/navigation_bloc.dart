@@ -7,7 +7,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc() : super(NavigationState.initial()) {
     on<NavigateToSplashScreen2>(_onNavigateToSplashScreen2);
     on<NavigateToOnboarding>(_onNavigateToOnboarding);
+    on<NavigateToOnboarding2>(_onNavigateToOnboarding2);
+    on<NavigateToOnboarding3>(_onNavigateToOnboarding3);
     on<NavigateToHome>(_onNavigateToHome);
+    on<NavigateToLogin>(_onNavigateToLogin);
 
     // Auto-trigger navigation after delays
     _startSplashTimer();
@@ -36,13 +39,34 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     NavigateToOnboarding event,
     Emitter<NavigationState> emit,
   ) {
-    emit(state.copyWith(currentRoute: AppRoute.onboarding));
+    emit(state.copyWith(currentRoute: AppRoute.onboarding1));
+  }
+
+  void _onNavigateToOnboarding2(
+    NavigateToOnboarding2 event,
+    Emitter<NavigationState> emit,
+  ) {
+    emit(state.copyWith(currentRoute: AppRoute.onboarding2));
+  }
+
+  void _onNavigateToOnboarding3(
+    NavigateToOnboarding3 event,
+    Emitter<NavigationState> emit,
+  ) {
+    emit(state.copyWith(currentRoute: AppRoute.onboarding3));
   }
 
   void _onNavigateToHome(
     NavigateToHome event,
     Emitter<NavigationState> emit,
   ) {
-    emit(state.copyWith(currentRoute: AppRoute.home));
+    emit(state.copyWith(currentRoute: AppRoute.savingscreen));
+  }
+
+  void _onNavigateToLogin(
+    NavigateToLogin event,
+    Emitter<NavigationState> emit,
+  ) {
+    emit(state.copyWith(currentRoute: AppRoute.login));
   }
 }

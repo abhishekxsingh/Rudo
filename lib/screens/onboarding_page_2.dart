@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rudo/blocs/onboarding/onboarding_bloc.dart';
-import 'package:rudo/blocs/onboarding/onboarding_event.dart';
+import 'package:rudo/screens/onboarding_page_3.dart';
 
-class SavingsScreen extends StatelessWidget {
-  const SavingsScreen({super.key});
+class OnboardingPage2 extends StatelessWidget {
+  const OnboardingPage2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +94,8 @@ class SavingsScreen extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Be Vietnam Pro',
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 15),
@@ -105,6 +104,8 @@ class SavingsScreen extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[500],
                   fontSize: 18,
+                  fontFamily: 'Be Vietnam Pro',
+                  fontWeight: FontWeight.w400,
                 ),
               ),
 
@@ -113,8 +114,12 @@ class SavingsScreen extends StatelessWidget {
               // Continue button
               GestureDetector(
                 onTap: () {
-                  // Use the OnboardingBloc to navigate to the next page
-                  context.read<OnboardingBloc>().add(NextPageRequested());
+                  // Using direct navigation instead of named routes
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => const OnboardingScreenPage3()),
+                  // );
                 },
                 child: Container(
                   width: double.infinity,
@@ -135,6 +140,7 @@ class SavingsScreen extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
+                            fontFamily: 'Be Vietnam Pro',
                           ),
                         ),
                       ),
@@ -193,8 +199,7 @@ class SavingsScreen extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'Be Vietnam Pro',
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
