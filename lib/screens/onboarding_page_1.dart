@@ -28,8 +28,7 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
         curve: Curves.easeInOut,
       );
     } else {
-      // Use NavigationBloc to navigate to onboarding2
-      context.read<NavigationBloc>().add(NavigateToOnboarding2());
+      context.read<NavigationBloc>().add(NavigateToOnboarding3());
     }
   }
 
@@ -444,6 +443,7 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
   }
 
 // Asset card widget
+  // ignore: unused_element
   Widget _buildAssetCard(
       String symbol, String name, String changePercent, double price) {
     final isPositive = changePercent.startsWith("+");

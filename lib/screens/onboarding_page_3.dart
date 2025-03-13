@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rudo/blocs/navigation/navigation_bloc.dart';
 import 'package:rudo/blocs/navigation/navigation_event.dart';
+import 'package:rudo/screens/loginpage.dart';
 
 class OnboardingPage3 extends StatelessWidget {
   const OnboardingPage3({super.key});
@@ -156,10 +157,14 @@ class OnboardingPage3 extends StatelessWidget {
 
                 const Spacer(flex: 1),
 
-                // Get started button
+                // getstarted button
                 GestureDetector(
                   onTap: () {
-                    context.read<NavigationBloc>().add(NavigateToHome());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
                   },
                   child: Container(
                     width: double.infinity,

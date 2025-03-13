@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:rudo/blocs/navigation/navigation_bloc.dart';
+import 'package:rudo/blocs/navigation/navigation_event.dart';
 
 class OnboardingPage2 extends StatelessWidget {
-  const OnboardingPage2({super.key});
+  OnboardingPage2({super.key})
+      : _pageController = PageController(),
+        _currentPage = 0;
+
+  final PageController _pageController;
+  final int _currentPage;
+  final int _totalPages = 3;
+
+  get context => null;
+
+  void _nextPage() {
+    if (_currentPage < _totalPages - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // Use NavigationBloc to navigate to onboarding2
+      context.read<NavigationBloc>().add(NavigateToOnboarding3());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +135,7 @@ class OnboardingPage2 extends StatelessWidget {
               // Continue button
               GestureDetector(
                 onTap: () {
+                  _nextPage();
                   // Using direct navigation instead of named routes
                   // Navigator.push(
                   //   context,

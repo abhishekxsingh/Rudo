@@ -9,11 +9,41 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
+  bool _isPhoneEntered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController.addListener(_onPhoneChanged);
+  }
+
+  void _onPhoneChanged() {
+    setState(() {
+      _isPhoneEntered = _phoneController.text.isNotEmpty;
+    });
+  }
 
   @override
   void dispose() {
+    _phoneController.removeListener(_onPhoneChanged);
     _phoneController.dispose();
     super.dispose();
+  }
+
+  void _onVerifyPressed() {
+    if (_isPhoneEntered) {
+      // Navigate to next page
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(title: const Text('Next Page')),
+            body: Center(
+              child: Text('Verified number: ${_phoneController.text}'),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -25,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Padding(
@@ -60,40 +90,42 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _phoneController,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: Colors.grey, fontSize: 18),
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: "+91 9999 999 999",
-                hintStyle: TextStyle(color: Colors.grey[600]),
+                hintStyle: TextStyle(color: Colors.grey.shade600),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[800]!),
-                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey.shade800),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey.shade600),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 filled: true,
                 fillColor: Colors.black,
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 16.0,
+                ),
               ),
             ),
             const SizedBox(height: 32),
-            const Row(
+            Row(
               children: [
                 Expanded(
-                  child: Divider(color: Colors.grey),
+                  child: Divider(color: Colors.grey.shade700),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     "OR",
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.grey.shade500),
                   ),
                 ),
                 Expanded(
-                  child: Divider(color: Colors.grey),
+                  child: Divider(color: Colors.grey.shade700),
                 ),
               ],
             ),
@@ -104,7 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[900],
+                      backgroundColor: Colors.grey.shade900,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -113,16 +146,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+                        Image.asset(
+                          'assets/image/google.png',
                           height: 24,
                           width: 24,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
-                          "Google",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        const Text("Google"),
                       ],
                     ),
                   ),
@@ -132,7 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[900],
+                      backgroundColor: Colors.grey.shade900,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -141,12 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.apple, color: Colors.white),
+                        Icon(Icons.apple, color: Colors.white, size: 24),
                         const SizedBox(width: 8),
-                        const Text(
-                          "Apple",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        const Text("Apple"),
                       ],
                     ),
                   ),
@@ -157,29 +185,34 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Implement verification logic here
-                  String phoneNumber = _phoneController.text;
-                  if (phoneNumber.isNotEmpty) {
-                    // Navigate to verification screen or send OTP
-                    print('Verifying number: $phoneNumber');
-                  }
-                },
+                onPressed: _isPhoneEntered ? _onVerifyPressed : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[900],
+                  backgroundColor:
+                      _isPhoneEntered ? Colors.white : Colors.grey.shade800,
+                  foregroundColor: _isPhoneEntered ? Colors.black : Colors.grey,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  disabledBackgroundColor: Colors.grey.shade800,
+                  disabledForegroundColor: Colors.grey,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "Verify number",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Icon(Icons.arrow_forward, color: Colors.grey[400]),
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 20,
+                      color: _isPhoneEntered ? Colors.black : Colors.grey,
+                    ),
                   ],
                 ),
               ),
