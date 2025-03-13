@@ -148,7 +148,7 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
         children: [
           // Empty space for first card placeholder (shown as grey in the image)
           Container(
-            margin: const EdgeInsets.only(top: 130, bottom: 16, left: 60),
+            margin: const EdgeInsets.only(top: 130, bottom: 16, left: 15),
             height: 70,
             width: 290,
             decoration: BoxDecoration(
@@ -160,7 +160,7 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
 
           // Green highlighted card - "Invest in your goals"
           Container(
-            margin: const EdgeInsets.only(bottom: 16, left: 60),
+            margin: const EdgeInsets.only(bottom: 16, left: 15),
             height: 80,
             width: 290,
             decoration: BoxDecoration(
@@ -232,7 +232,7 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
 
           // Empty space for third card placeholder (shown as grey in the image)
           Container(
-            margin: const EdgeInsets.only(bottom: 16, left: 60),
+            margin: const EdgeInsets.only(bottom: 16, left: 15),
             height: 70,
             width: 290,
             decoration: BoxDecoration(
@@ -512,33 +512,34 @@ class _OnboardingPage1State extends State<OnboardingPage1> {
   }
 
   Widget _buildContributor(String title, String amount) {
-    return Container(
-      width: 160,
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey[400],
-              fontSize: 18,
+    return Expanded(
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: 18,
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            amount,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 10),
+            Text(
+              amount,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rudo/blocs/app/app_bloc.dart';
@@ -11,8 +12,18 @@ import 'package:rudo/screens/onboarding_page_2.dart';
 import 'package:rudo/screens/onboarding_page_3.dart';
 import 'package:rudo/screens/splashscreen_page_1.dart';
 import 'package:rudo/screens/splashscreen_page_2.dart';
+import 'package:rudo/services/firebase_auth_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    debugPrint("Firebase initialization error: $e");
+  }
+
   runApp(const MyApp());
 }
 
@@ -35,7 +46,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'RuDo App',
-        debugShowCheckedModeBanner: false, // Remove debug banner
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -55,6 +66,8 @@ class MyApp extends StatelessWidget {
                 return const OnboardingPage3();
               case AppRoute.login:
                 return const LoginScreen();
+              case AppRoute.home:
+                return const SplashScreenPage1();
               default:
                 return const OnboardingPage3();
             }

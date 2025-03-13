@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rudo/screens/welcomepage.dart';
+import 'package:rudo/services/firebase_auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+  // final AuthService _auth = AuthService();
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -10,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
   bool _isPhoneEntered = false;
+  final _auth = AuthService();
 
   @override
   void initState() {
@@ -134,7 +138,27 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        final userCredential = await _auth.loginWithGoogle();
+                        print(
+                            'UserCredential received: ${userCredential.user?.uid}');
+
+                        // Navigate to the HomeScreen directly
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const WelcomePage()),
+                        );
+                      } catch (e) {
+                        print('Error during Google Sign-In: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Failed to sign in with Google: ${e.toString()}'),
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey.shade900,
                       foregroundColor: Colors.white,
@@ -160,7 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Implement Apple sign in here
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey.shade900,
                       foregroundColor: Colors.white,

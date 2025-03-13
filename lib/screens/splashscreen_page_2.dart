@@ -14,7 +14,11 @@ class SplashScreenPage2 extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/image/logo.png'),
+                Image.asset(
+                  'assets/image/logo.png',
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  fit: BoxFit.contain,
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -24,6 +28,8 @@ class SplashScreenPage2 extends StatelessWidget {
                 horizontal: 20,
                 vertical: 10,
               ),
+              width: MediaQuery.of(context).size.width * 0.8,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade700),
                 borderRadius: BorderRadius.circular(25),
@@ -50,29 +56,3 @@ class SplashScreenPage2 extends StatelessWidget {
     );
   }
 }
-
-// Example of how to use this in your main.dart:
-/*
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RuDo Investment App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'BeVietnamPro',
-      ),
-      home: const SplashScreen(),
-      routes: {
-        '/home': (context) => const HomeScreen(),
-      },
-    );
-  }
-}
-*/

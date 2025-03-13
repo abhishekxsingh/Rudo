@@ -13,10 +13,17 @@ class SplashScreenPage1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo in the middle
-              Image.asset('assets/image/logo.png'),
-              const SizedBox(height: 30),
+              // Image.asset('assets/image/logo.png'),
+              // const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/image/logo.png',
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    fit: BoxFit.contain,
+                  ),
+                ],
               ),
             ],
           ),

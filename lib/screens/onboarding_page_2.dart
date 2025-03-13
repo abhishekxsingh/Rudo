@@ -107,7 +107,7 @@ class OnboardingPage2 extends StatelessWidget {
                 ],
               ),
 
-              const Spacer(flex: 2),
+              const Spacer(flex: 1),
 
               // Bottom text
               const Text(

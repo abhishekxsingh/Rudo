@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "679972406336",
+    "project_id": "rudo-1c44c",
+    "storage_bucket": "rudo-1c44c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679972406336:android:f671853d8debf33c480ba5",
+        "android_client_info": {
+          "package_name": "com.example.rudo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679972406336-5823tanj3i3u6utsq3apb61c4upo8ip8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rudo",
+            "certificate_hash": "3e7d8d7a19afe000a98a1bc7070f0b8d953dcde9"
+          }
+        },
+        {
+          "client_id": "679972406336-5kes370gc5kb2ol4h8lr2an4810rqh7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuHwvd6sY_4TI_4-V-I81Py2YQ0Q6pKgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679972406336-5kes370gc5kb2ol4h8lr2an4810rqh7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
