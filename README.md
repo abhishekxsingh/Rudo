@@ -12,6 +12,22 @@ Rudo is a financial management application designed to help users track their ex
 - **Firebase Integration**: Backend support for user data.
 - **BLoC Architecture**: Efficient state management.
 
+###Commits
+
+#docs: Add README file with project overview, installation steps, and contribution guidelines.
+
+#fix: Resolve bugs and add user name display on the welcome page via Firebase.
+
+#feat: Successfully integrate Firebase services.
+
+#feat: Complete UI design, ongoing Firebase integration.
+
+#feat: Complete app tour screen and initiate login page development.
+
+#feat: Add splash screen, app tour, and BLoC setup.
+
+#chore: Basic boilerplate setup.
+
 ## Installation
 
 ### Prerequisites
@@ -44,6 +60,7 @@ Ensure you have the following installed:
    ```sh
    flutter run
    ```
+6. APK Link (Download only for Android): https://drive.google.com/file/d/1lPPlxVHJWhg3_KUVVET0bogwAp3L2TmF/view?usp=drive_link
 
 ## Folder Structure
 
