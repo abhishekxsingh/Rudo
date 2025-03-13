@@ -27,7 +27,7 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
+   git clone https://github.com/abhishekxsingh/Rudo.git
    ```
 2. Navigate to the project directory:
    ```sh
@@ -49,11 +49,10 @@ Ensure you have the following installed:
 
 ```
 lib/
-│── main.dart       # Entry point of the application
-│── core/           # Application core configurations
-│── ui/             # UI components and screens
-│── data/           # Data handling (API, Firebase, etc.)
 │── blocs/          # State management (BLoC pattern)
+│── screens/        # UI components and screens
+│── services/       # handling (Firebase)
+│── main.dart       # Entry point of the application
 ```
 
 ## Development
