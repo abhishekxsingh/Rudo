@@ -8,7 +8,6 @@ class AuthService {
 
   Future<UserCredential> loginWithGoogle() async {
     try {
-      // Force native implementation to avoid Pigeon related issues
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) throw Exception('Google Sign In was canceled');
 

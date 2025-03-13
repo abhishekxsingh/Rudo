@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rudo/screens/welcomepage.dart';
 import 'package:rudo/services/firebase_auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-  // final AuthService _auth = AuthService();
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -12,8 +12,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  bool _isPhoneEntered = false;
+  bool _isPhoneValid = false;
   final _auth = AuthService();
+  bool _isLoading = false;
+  String? _phoneError;
 
   @override
   void initState() {
@@ -22,8 +24,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onPhoneChanged() {
+    final phoneText = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
     setState(() {
-      _isPhoneEntered = _phoneController.text.isNotEmpty;
+      if (phoneText.length == 10) {
+        _isPhoneValid = true;
+        _phoneError = null;
+      } else if (phoneText.isNotEmpty) {
+        _isPhoneValid = false;
+        _phoneError = 'Phone number must be 10 digits';
+      } else {
+        _isPhoneValid = false;
+        _phoneError = null;
+      }
     });
   }
 
@@ -35,14 +47,23 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onVerifyPressed() {
-    if (_isPhoneEntered) {
+    if (_isPhoneValid) {
+      final phoneText = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
       // Navigate to next page
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Scaffold(
-            appBar: AppBar(title: const Text('Next Page')),
+            backgroundColor: Colors.black,
             body: Center(
-              child: Text('Verified number: ${_phoneController.text}'),
+              child: Text(
+                'Verified number: $phoneText',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'BeVietnamPro',
+                ),
+              ),
             ),
           ),
         ),
@@ -96,15 +117,29 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _phoneController,
               style: const TextStyle(color: Colors.grey, fontSize: 18),
               keyboardType: TextInputType.phone,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(10),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               decoration: InputDecoration(
-                hintText: "+91 9999 999 999",
+                hintText: "Enter 10 digit number",
                 hintStyle: TextStyle(color: Colors.grey.shade600),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey.shade800),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.shade600),
+                  borderSide: BorderSide(
+                      color:
+                          _isPhoneValid ? Colors.green : Colors.grey.shade600),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 filled: true,
@@ -113,6 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   vertical: 16.0,
                   horizontal: 16.0,
                 ),
+                errorText: _phoneError,
+                prefixText: "+91 ",
+                prefixStyle: const TextStyle(color: Colors.grey, fontSize: 18),
               ),
             ),
             const SizedBox(height: 32),
@@ -138,27 +176,38 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        final userCredential = await _auth.loginWithGoogle();
-                        print(
-                            'UserCredential received: ${userCredential.user?.uid}');
+                    onPressed: _isLoading
+                        ? null
+                        : () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            try {
+                              final userCredential =
+                                  await _auth.loginWithGoogle();
+                              final displayName =
+                                  userCredential.user?.displayName ?? 'User';
 
-                        // Navigate to the HomeScreen directly
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const WelcomePage()),
-                        );
-                      } catch (e) {
-                        print('Error during Google Sign-In: $e');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Failed to sign in with Google: ${e.toString()}'),
-                          ),
-                        );
-                      }
-                    },
+                              // Navigate to the WelcomePage with displayName
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        WelcomePage(displayName: displayName)),
+                              );
+                            } catch (e) {
+                              print('Error during Google Sign-In: $e');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Failed to sign in with Google: ${e.toString()}'),
+                                ),
+                              );
+                            } finally {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey.shade900,
                       foregroundColor: Colors.white,
@@ -170,13 +219,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/image/google.png',
-                          height: 24,
-                          width: 24,
-                        ),
-                        const SizedBox(width: 8),
-                        const Text("Google"),
+                        if (_isLoading)
+                          const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        else ...[
+                          Image.asset(
+                            'assets/image/google.png',
+                            height: 24,
+                            width: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text("Google"),
+                        ],
                       ],
                     ),
                   ),
@@ -211,11 +271,11 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _isPhoneEntered ? _onVerifyPressed : null,
+                onPressed: _isPhoneValid ? _onVerifyPressed : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      _isPhoneEntered ? Colors.white : Colors.grey.shade800,
-                  foregroundColor: _isPhoneEntered ? Colors.black : Colors.grey,
+                      _isPhoneValid ? Colors.white : Colors.grey.shade800,
+                  foregroundColor: _isPhoneValid ? Colors.black : Colors.grey,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -237,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Icon(
                       Icons.arrow_forward,
                       size: 20,
-                      color: _isPhoneEntered ? Colors.black : Colors.grey,
+                      color: _isPhoneValid ? Colors.black : Colors.grey,
                     ),
                   ],
                 ),

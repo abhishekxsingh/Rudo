@@ -24,7 +24,7 @@ void main() async {
     debugPrint("Firebase initialization error: $e");
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'BeVietnamPro',
         ),
         home: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
